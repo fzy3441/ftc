@@ -1,10 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"ftc/ch"
-)
-
 func main() {
 /*	fmt.Println("hello word")
 	f:=tt.GoFor(func(o *tt.Gfo){
@@ -76,7 +71,7 @@ func main() {
 	})
 	select{}*/
 
-	link := ch.NewLink()
+/*	link := ch.NewLink()
 	link.Push(1)
 	link.Push(2)
 	link.Push(3)
@@ -88,7 +83,7 @@ func main() {
 	link.Push(9)
 	fmt.Printf("%+v",link.List())
 	link.Delete(3)
-	fmt.Printf("%+v",link.List())
+	fmt.Printf("%+v",link.List())*/
 
 	//fmt.Printf("%+v\n",link.Pop())
 	//fmt.Printf("%+v\n",link.Pop())
@@ -113,5 +108,8 @@ func main() {
 	fmt.Println(link.Count)
 	fmt.Printf("%+v",link.List())*/
 
+/*	fmt.Println(tt.TimeFmt())
+*/
 
+	
 }

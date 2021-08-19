@@ -1,7 +1,7 @@
 package ch
 
 import (
-	"ftc/tt"
+	"github.com/fzy3441/ftc/tt"
 )
 
 type Node struct {

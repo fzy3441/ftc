@@ -86,6 +86,7 @@ func main() {
 	fmt.Printf("%+v",link.List())*/
 
 	//fmt.Printf("%+v\n",link.Pop())
+	
 	//fmt.Printf("%+v\n",link.Pop())
 	//fmt.Printf("%+v\n",link.Pop())
 	//fmt.Printf("%+v\n",link.Pop())

@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"github.com/fzy3441/ftc/tt"
+)
+
 func main() {
 /*	fmt.Println("hello word")
 	f:=tt.GoFor(func(o *tt.Gfo){
@@ -71,22 +76,22 @@ func main() {
 	})
 	select{}*/
 
-/*	link := ch.NewLink()
-	link.Push(1)
-	link.Push(2)
-	link.Push(3)
-	link.Push(4)
-	link.Push(5)
-	link.Push(6)
-	link.Push(7)
-	link.Push(8)
-	link.Push(9)
-	fmt.Printf("%+v",link.List())
-	link.Delete(3)
-	fmt.Printf("%+v",link.List())*/
+	//link := ch.NewLink()
+	//link.Push(1)
+	//link.Push(2)
+	//link.Push(3)
+	//link.Push(4)
+	//link.Push(5)
+	//link.Push(6)
+	//link.Push(7)
+	//link.Push(8)
+	//link.Push(9)
+	//fmt.Printf("%+v",link.List())
+	//link.Delete(3)
+	//fmt.Printf("%+v",link.List())
 
 	//fmt.Printf("%+v\n",link.Pop())
-	
+
 	//fmt.Printf("%+v\n",link.Pop())
 	//fmt.Printf("%+v\n",link.Pop())
 	//fmt.Printf("%+v\n",link.Pop())
@@ -97,20 +102,25 @@ func main() {
 	//fmt.Printf("%+v\n",link.Pop())
 	//fmt.Printf("%+v\n",link.Pop())
 
-/*	fmt.Printf("%+v",link.List())
-	fmt.Printf("%+v",link)
+	//fmt.Printf("%+v",link.List())
+	//fmt.Printf("%+v",link)
+	//
+	//link.Insert(7,10)
+	//fmt.Printf("%+v",link)
+	//fmt.Printf("%+v",link.List())
+	//
+	//link.Insert(0,11)
+	//fmt.Printf("%+v",link.List())
+	//fmt.Println(link.Count)
+	//fmt.Printf("%+v",link.List())
 
-	link.Insert(8,10)
-	fmt.Printf("%+v",link)
-	fmt.Printf("%+v",link.List())
-
-	link.Insert(0,11)
-	fmt.Printf("%+v",link.List())
-	fmt.Println(link.Count)
-	fmt.Printf("%+v",link.List())*/
+	fmt.Println(tt.Ternary(false==true,1,aa))
 
 /*	fmt.Println(tt.TimeFmt())
 */
 
+}
+func aa (){
+	fmt.Println("------")
 
 }

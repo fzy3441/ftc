@@ -23,8 +23,17 @@ type FStus struct {
 }
 
 type Gfo struct {
+	_break bool
 	Num , Inx int
 	Cache interface{}
+}
+
+func (obj *Gfo)Break()  {
+	obj._break=true
+}
+
+func (obj *FStus)SetWaitGroup(wg *sync.WaitGroup)  {
+	obj._wg=wg
 }
 
 func GoFor(f func(o *Gfo))*FStus {
@@ -59,6 +68,7 @@ func (obj *FStus)Exec(f func(o *Gfo))*FStus  {
 
 func (obj *FStus)Action()  {
 	if obj._wg != nil {
+		fmt.Println("++")
 		obj._wg.Add(1)
 	}
 	for obj.checkgo() {
@@ -84,16 +94,13 @@ func (obj *FStus)Action()  {
 	if obj._wg != nil {
 		obj._wg.Done()
 	}
-	fmt.Println("for over")
-
 }
-
 func (obj *FStus)Run() {
 		go obj.Action()
 }
 
 func (obj *FStus)checkgo()bool  {
-	return obj._cond(obj.Option)
+	return obj._cond(obj.Option)&&!obj.Option._break
 }
 
 func (obj *FStus)Pause()  {

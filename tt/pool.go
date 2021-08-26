@@ -1,5 +1,7 @@
 package tt
 
+import "time"
+
 type Pool struct {
 	WorkNum int
 	WorkingNum int
@@ -34,14 +36,24 @@ func NewTool(num int)*Pool  {
 }
 
 func (obj *Pool)working()  {
-	GoFor(func(o *Gfo) {
+	gf:=GoFor(func(o *Gfo) {
 		work := <-obj._idle
 		obj.IdleNum--
 		task := <-obj._queue
 		obj.QueueNum--
 		work.Task=task
 		obj.newWork(work)
-	}).Run()
+	})
+	gf.Run()
+}
+
+func (obj *Pool)Wait()  {
+	for  {
+		if obj.QueueNum==0&&obj.WorkingNum==0{
+			return
+		}
+		time.Sleep(1*time.Second)
+	}
 }
 
 func (obj *Pool)AddTask(task func(w *Worker))  {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/fzy3441/ftc/ch"
 	"github.com/fzy3441/ftc/tt"
 )
 
@@ -44,7 +45,6 @@ func main() {
 		},func() {
 			fmt.Println("finally4")
 		})*/
-
 	/*tool:=tt.NewTool(2)
 	tool.Run()
 	tool.AddTask(func(w *tt.Worker) {
@@ -63,7 +63,6 @@ func main() {
 		}).Cond(func(o *tt.Gfo) bool {
 			return o.Num <5
 		}).Action()
-
 	})
 	tool.AddTask(func(w *tt.Worker) {
 		tt.GoFor(func(o *tt.Gfo) {
@@ -74,21 +73,24 @@ func main() {
 		}).Action()
 
 	})
-	select{}*/
+	tool.Wait()*/
+	//select{}
 
-	//link := ch.NewLink()
-	//link.Push(1)
-	//link.Push(2)
-	//link.Push(3)
-	//link.Push(4)
-	//link.Push(5)
-	//link.Push(6)
-	//link.Push(7)
-	//link.Push(8)
-	//link.Push(9)
-	//fmt.Printf("%+v",link.List())
-	//link.Delete(3)
-	//fmt.Printf("%+v",link.List())
+	link := ch.NewLink()
+	link.Push(1)
+	link.Push(2)
+	link.Push(3)
+	link.Push(4)
+	link.Push(5)
+	link.Push(6)
+	link.Push(7)
+	link.Push(8)
+	link.Push(9)
+	fmt.Printf("%+v\n",link.List())
+
+	link.Range(func(o *tt.Gfo, node *ch.Node) {
+		fmt.Printf("-------->>>%+v====>>>>%+v\n",o,node)
+	},ch.RANGE_STATUS_ORDER_DESC)
 
 	//fmt.Printf("%+v\n",link.Pop())
 
@@ -114,13 +116,9 @@ func main() {
 	//fmt.Println(link.Count)
 	//fmt.Printf("%+v",link.List())
 
-	fmt.Println(tt.Ternary(false==true,1,aa))
+	//fmt.Println(tt.Ternary(false==true,1,aa))
 
 /*	fmt.Println(tt.TimeFmt())
 */
-
-}
-func aa (){
-	fmt.Println("------")
 
 }

@@ -4,6 +4,14 @@ import (
 	"github.com/fzy3441/ftc/tt"
 )
 
+type RANGE_ORDER_STATUS int
+
+const (
+	RANGE_STATUS_ORDER_ASC RANGE_ORDER_STATUS= iota
+	RANGE_STATUS_ORDER_DESC
+
+)
+
 type Node struct {
 	Next *Node
 	Prev *Node
@@ -149,6 +157,35 @@ func (obj *Link)Insert(num int,data interface{})  {
 		return o.Num <= num
 	}).Action()
 }
+func (obj *Link)Range(f func(o *tt.Gfo,node *Node),order...RANGE_ORDER_STATUS)  {
+	var item *Node
+	odr:=RANGE_STATUS_ORDER_ASC
+	if len(order)>0 {
+		odr=order[0]
+	}
+	switch odr{
+	case RANGE_STATUS_ORDER_ASC:
+		item=obj.Head
+	case RANGE_STATUS_ORDER_DESC:
+		item=obj.Last
+	default:
+	}
+
+	tt.GoFor(func(o *tt.Gfo) {
+		f(o,item)
+		switch odr{
+		case RANGE_STATUS_ORDER_ASC:
+			item=item.Next
+		case RANGE_STATUS_ORDER_DESC:
+			item=item.Prev
+		default:
+		}
+		if item==nil {
+			o.Break()
+		}
+	}).Action()
+}
+
 func (obj *Link)List()[]interface{} {
 	list:=make([]interface{},0,obj.Count)
 	curr := obj.Head

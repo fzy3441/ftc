@@ -32,6 +32,10 @@ func (obj *Gfo)Break()  {
 	obj._break=true
 }
 
+func (obj *Gfo)SetBreak(flag bool)  {
+	obj._break=flag
+}
+
 func (obj *FStus)SetWaitGroup(wg *sync.WaitGroup)  {
 	obj._wg=wg
 }

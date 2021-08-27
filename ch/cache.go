@@ -62,8 +62,8 @@ func (obj *ForStatus)Break()  {
 }
 
 type Value struct {
-	k string
-	v interface{}
+	Key string
+	Value interface{}
 }
 
 func (obj *Cacher)RangeMap(f func(fs *ForStatus,val *Value))  {
@@ -71,8 +71,8 @@ func (obj *Cacher)RangeMap(f func(fs *ForStatus,val *Value))  {
 	for k,v := range obj._cmap{
 		fs.Inx++
 		f(fs,&Value{
-			k: k,
-			v: v,
+			Key: k,
+			Value: v,
 		})
 		if fs._break {
 			break

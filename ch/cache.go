@@ -1,6 +1,8 @@
 package ch
 
-import "sync"
+import (
+	"sync"
+)
 
 type Cacher struct {
 	mutex sync.Mutex
@@ -34,9 +36,46 @@ func (obj *Cacher)Pop()interface{} {
 }
 
 func (obj *Cacher)List() []interface{} {
-	return obj.List()
+	return obj._link_list.List()
 }
 
 func (obj *Cacher)Maps() map[string]interface{} {
 	return obj._cmap
+}
+
+func (obj *Cacher)IsExists(key string)bool  {
+	_,ok :=obj._cmap[key]
+	return ok
+}
+
+type ForStatus struct {
+	_break bool
+	Inx int
+}
+
+func (obj *ForStatus)SetBreak(flag bool)  {
+	obj._break = flag
+}
+
+func (obj *ForStatus)Break()  {
+	obj.SetBreak(true)
+}
+
+type Value struct {
+	k string
+	v interface{}
+}
+
+func (obj *Cacher)RangeMap(f func(fs *ForStatus,val *Value))  {
+	fs:=&ForStatus{}
+	for k,v := range obj._cmap{
+		fs.Inx++
+		f(fs,&Value{
+			k: k,
+			v: v,
+		})
+		if fs._break {
+			break
+		}
+	}
 }

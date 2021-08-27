@@ -2,6 +2,7 @@ package ch
 
 import (
 	"github.com/fzy3441/ftc/tt"
+	"sync"
 )
 
 type RANGE_ORDER_STATUS int
@@ -22,15 +23,17 @@ type Link struct {
 	Count int
 	Head *Node
 	Last *Node
+	mutex sync.Mutex
 }
 
 func NewLink()*Link {
 	return &Link{
-
 	}
 }
 
 func (obj *Link)Push(data interface{})  {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	node := &Node{
 		Data:data,
 	}
@@ -47,6 +50,8 @@ func (obj *Link)Push(data interface{})  {
 	obj.Count++
 }
 func (obj *Link)Pop()(data interface{}){
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	if obj.Last== nil  {
 		return data
 	}
@@ -63,6 +68,8 @@ func (obj *Link)Pop()(data interface{}){
 }
 
 func (obj *Link)Shift()(data interface{} ) {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	if obj.Head== nil {
 		return data
 	}
@@ -79,6 +86,8 @@ func (obj *Link)Shift()(data interface{} ) {
 }
 
 func (obj *Link)Unshift(data interface{})  {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	node := &Node{
 		Data: data,
 	}
@@ -97,6 +106,8 @@ func (obj *Link)Length ()int  {
 }
 
 func (obj *Link)Delete(num int)bool {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	if obj.Count < num-1 {
 		return false
 	}
@@ -131,6 +142,8 @@ func (obj *Link)Delete(num int)bool {
 }
 
 func (obj *Link)Insert(num int,data interface{})  {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	if obj.Count < num-1 {
 		return
 	}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/fzy3441/ftc/ch"
 	"github.com/fzy3441/ftc/tt"
+	"time"
 )
 
 func main() {
@@ -77,16 +78,18 @@ func main() {
 	//select{}
 
 	link := ch.NewLink()
-	link.Push(1)
-	link.Push(2)
-	link.Push(3)
-	link.Push(4)
-	link.Push(5)
-	link.Push(6)
-	link.Push(7)
-	link.Push(8)
-	link.Push(9)
-	fmt.Printf("%+v\n",link.List())
+	tt.GoFor(func(o *tt.Gfo) {
+		go func(key int,link *ch.Link) {
+			for i:=0;i<5;i++ {
+				link.Push(fmt.Sprintf("k=>%+v v=>%+v===>",key,i))
+				time.Sleep(1*time.Second)
+			}
+		}(o.Num,link)
+
+		o.SetBreak(o.Num >=50)
+	}).Action()
+	time.Sleep(5*time.Second)
+	fmt.Printf("count=>%+v\n",link.Count)
 
 	link.Range(func(o *tt.Gfo, node *ch.Node) {
 		fmt.Printf("-------->>>%+v====>>>>%+v\n",o,node)
@@ -120,5 +123,4 @@ func main() {
 
 /*	fmt.Println(tt.TimeFmt())
 */
-
 }

@@ -1,6 +1,9 @@
 package ch
 
+import "sync"
+
 type Cacher struct {
+	mutex sync.Mutex
 	_cmap map[string]interface{}
 	_link_list *Link
 }
@@ -13,7 +16,9 @@ func NewCacher() *Cacher {
 }
 
 func (obj *Cacher)Set(key string,data interface{}){
+	obj.mutex.Lock()
 	obj._cmap[key]=data
+	obj.mutex.Unlock()
 }
 
 func (obj *Cacher)Get(key string)interface{}{

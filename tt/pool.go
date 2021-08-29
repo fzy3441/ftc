@@ -1,15 +1,57 @@
 package tt
 
-import "time"
+import (
+	"time"
+)
+
+type StatStopInt int
+
+const (
+	StaStopt StatStopInt = 0
+	GEN_RAND_STR_LEN = 12
+	CHAN_QUEUE_LEN_TAKE = 10
+
+)
+
+type Stat struct {
+	iWorker,iWorking,iIdle,iQueue int
+	chQueueI,chIdleI,chWorkingI chan int
+	chComm chan StatStopInt
+}
+
+func newStat(num int)*Stat  {
+	stat:= &Stat{
+		iWorker: num,
+		chIdleI: make(chan int,0),
+		chQueueI: make(chan int,0),
+		chWorkingI: make(chan int,0),
+		chComm: make(chan StatStopInt,0),
+	}
+	go stat.Run()
+	return stat
+}
+
+func (obj *Stat)Run()  {
+	for {
+		select {
+		case i := <-obj.chIdleI:
+			obj.iIdle += i
+		case i := <-obj.chQueueI:
+			obj.iQueue += i
+		case i := <-obj.chWorkingI:
+			obj.iWorking += i
+		case <-obj.chComm:
+			return
+		}
+	}
+}
 
 type Pool struct {
-	WorkNum int
-	WorkingNum int
-	IdleNum  int
-	QueueNum int
-	_queue   chan func(w *Worker)
-	_working map[string] *Worker
-	_idle chan *Worker
+	*Stat
+	chQueueFn   chan func(w *Worker)
+	chIdleWork chan *Worker
+	mpWorking map[string] *Worker
+
 }
 
 type Worker struct {
@@ -19,7 +61,7 @@ type Worker struct {
 
 func newWorker() *Worker {
 	return &Worker{
-		Name: GenRandStr(12),
+		Name: GenRandStr(GEN_RAND_STR_LEN),
 	}
 }
 func (obj *Worker)Run()  {
@@ -27,29 +69,33 @@ func (obj *Worker)Run()  {
 }
 
 func NewTool(num int)*Pool  {
-	return &Pool{
-		WorkNum: num,
-		_queue: make(chan func(w *Worker),num*2),
-		_working: make(map[string]*Worker),
-		_idle: make(chan *Worker,num),
+	pool:= &Pool{
+		Stat:newStat(num),
+		chQueueFn: make(chan func(w *Worker),num*CHAN_QUEUE_LEN_TAKE),
+		mpWorking: make(map[string]*Worker),
+		chIdleWork: make(chan *Worker,num),
 	}
+	pool.init()
+	return pool
+}
+func (obj *Pool)init()  {
+	obj.initWorker()
 }
 
-func (obj *Pool)working()  {
-	gf:=GoFor(func(o *Gfo) {
-		work := <-obj._idle
-		obj.IdleNum--
-		task := <-obj._queue
-		obj.QueueNum--
-		work.Task=task
+func (obj *Pool)actionWorking()  {
+	GoFor(func(o *Gfo) {
+		work := <-obj.chIdleWork
+		obj.chIdleI <- -1
+		work.Task = <-obj.chQueueFn
+		obj.chQueueI <- -1
 		obj.newWork(work)
-	})
-	gf.Run()
+	}).Run()
 }
 
 func (obj *Pool)Wait()  {
 	for  {
-		if obj.QueueNum==0&&obj.WorkingNum==0{
+		if obj.iQueue==0&&obj.iWorking==0{
+			obj.chComm<- StaStopt
 			return
 		}
 		time.Sleep(1*time.Second)
@@ -57,30 +103,28 @@ func (obj *Pool)Wait()  {
 }
 
 func (obj *Pool)AddTask(task func(w *Worker))  {
-	obj.QueueNum++
-	obj._queue<- task
+	obj.chQueueFn<- task
+	obj.chQueueI <- 1
 }
 
 func (obj *Pool) initWorker(){
 	GoFor(func(o *Gfo) {
-		obj._idle <- newWorker()
-		obj.IdleNum++
-	}).Cond(func(o *Gfo) bool {
-		return o.Num <obj.WorkNum
-	}).Action()
+		obj.chIdleWork <- newWorker()
+		obj.chIdleI <- +1
+		o.SetBreak(o.Num>=obj.iWorker-1)
+	}).Run()
 }
 func (obj *Pool)newWork(work *Worker)  {
-	go func() {
-		obj.WorkingNum++
+	go func(work *Worker) {
+		obj.chWorkingI<- +1
 		work.Run()
-		obj.WorkingNum--
-		obj._idle <- work
-		obj.IdleNum++
-	}()
+		obj.chWorkingI<- -1
+		obj.chIdleWork <- work
+		obj.chIdleI <- +1
+	}(work)
 }
 func (obj *Pool)Run()  {
-	obj.initWorker()
-	obj.working()
+	obj.actionWorking()
 }
 
 

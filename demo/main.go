@@ -76,24 +76,24 @@ func main() {
 	})
 	tool.Wait()*/
 	//select{}
-
-	link := ch.NewLink()
-	tt.GoFor(func(o *tt.Gfo) {
-		go func(key int,link *ch.Link) {
-			for i:=0;i<5;i++ {
-				link.Push(fmt.Sprintf("k=>%+v v=>%+v===>",key,i))
-				time.Sleep(1*time.Second)
-			}
-		}(o.Num,link)
-
-		o.SetBreak(o.Num >=50)
-	}).Action()
-	time.Sleep(5*time.Second)
-	fmt.Printf("count=>%+v\n",link.Count)
-
-	link.Range(func(o *tt.Gfo, node *ch.Node) {
-		fmt.Printf("-------->>>%+v====>>>>%+v\n",o,node)
-	},ch.RANGE_STATUS_ORDER_DESC)
+	//
+	//link := ch.NewLink()
+	//tt.GoFor(func(o *tt.Gfo) {
+	//	go func(key int,link *ch.Link) {
+	//		for i:=0;i<5;i++ {
+	//			link.Push(fmt.Sprintf("k=>%+v v=>%+v===>",key,i))
+	//			time.Sleep(1*time.Second)
+	//		}
+	//	}(o.Num,link)
+	//
+	//	o.SetBreak(o.Num >=50)
+	//}).Action()
+	//time.Sleep(5*time.Second)
+	//fmt.Printf("count=>%+v\n",link.Count)
+	//
+	//link.Range(func(o *tt.Gfo, node *ch.Node) {
+	//	fmt.Printf("-------->>>%+v====>>>>%+v\n",o,node)
+	//},ch.RANGE_STATUS_ORDER_DESC)
 
 	//fmt.Printf("%+v\n",link.Pop())
 
@@ -123,4 +123,39 @@ func main() {
 
 /*	fmt.Println(tt.TimeFmt())
 */
+	link := ch.NewLink()
+	tool:=tt.NewTool(3000)
+	tool.AddTask(func(w *tt.Worker) {
+	fmt.Println("22222")
+	})
+	tt.GoFor(func(o *tt.Gfo) {
+		func(key int,link *ch.Link) {
+			tool.AddTask(func(w *tt.Worker) {
+				for  {
+					link.Push(1)
+				}
+				//time.Sleep(1*time.Second)
+				//fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,key,1)
+			})
+
+		}(o.Num,link)
+		o.SetBreak(o.Num+1 >=10000)
+	}).Run()
+
+
+	fmt.Println("--------------------------------------------------------------------")
+	tool.Run()
+
+	go func() {
+		var count int
+		for  {
+			fmt.Printf("link count=>>%d\n",link.Count-count)
+			count=link.Count
+			time.Sleep(1*time.Second)
+		}
+	}()
+	tool.Wait()
+
+	fmt.Printf("link count=>>%d\n",link.Count)
+
 }

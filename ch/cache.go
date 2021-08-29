@@ -43,6 +43,10 @@ func (obj *Cacher)Maps() map[string]interface{} {
 	return obj._cmap
 }
 
+func (obj *Cacher)GetLink()*Link  {
+	return obj._link_list
+}
+
 func (obj *Cacher)IsExists(key string)bool  {
 	_,ok :=obj._cmap[key]
 	return ok

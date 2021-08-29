@@ -13,6 +13,12 @@ const (
 
 )
 
+type StatStopInt int
+
+const (
+	StaStopt StatStopInt = 0
+)
+
 type Node struct {
 	Next *Node
 	Prev *Node
@@ -27,13 +33,11 @@ type Link struct {
 }
 
 func NewLink()*Link {
-	return &Link{
+	return  &Link{
 	}
 }
 
-func (obj *Link)Push(data interface{})  {
-	obj.mutex.Lock()
-	defer obj.mutex.Unlock()
+func (obj *Link)Push(data interface{}) {
 	node := &Node{
 		Data:data,
 	}

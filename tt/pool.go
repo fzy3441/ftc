@@ -36,6 +36,7 @@ func (obj *Stat)Run()  {
 		select {
 		case i := <-obj.chIdleI:
 			obj.iIdle += i
+			//fmt.Printf("=-=09099099-=-=-%+v\n",obj)
 		case i := <-obj.chQueueI:
 			obj.iQueue += i
 		case i := <-obj.chWorkingI:
@@ -88,6 +89,7 @@ func (obj *Pool)actionWorking()  {
 		obj.chIdleI <- -1
 		work.Task = <-obj.chQueueFn
 		obj.chQueueI <- -1
+
 		obj.newWork(work)
 	}).Run()
 }
@@ -95,7 +97,6 @@ func (obj *Pool)actionWorking()  {
 func (obj *Pool)Wait()  {
 	for  {
 		if obj.iQueue==0&&obj.iWorking==0{
-			obj.chComm<- StaStopt
 			return
 		}
 		time.Sleep(1*time.Second)
@@ -111,7 +112,7 @@ func (obj *Pool) initWorker(){
 	GoFor(func(o *Gfo) {
 		obj.chIdleWork <- newWorker()
 		obj.chIdleI <- +1
-		o.SetBreak(o.Num>=obj.iWorker-1)
+		o.SetBreak(o.Num+1>=obj.iWorker)
 	}).Run()
 }
 func (obj *Pool)newWork(work *Worker)  {
@@ -125,6 +126,11 @@ func (obj *Pool)newWork(work *Worker)  {
 }
 func (obj *Pool)Run()  {
 	obj.actionWorking()
+}
+
+func (obj *Pool)Stop()  {
+	obj.chComm<- StaStopt
+	return
 }
 
 

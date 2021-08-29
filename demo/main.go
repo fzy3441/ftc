@@ -124,38 +124,28 @@ func main() {
 /*	fmt.Println(tt.TimeFmt())
 */
 	link := ch.NewLink()
-	tool:=tt.NewTool(3000)
-	tool.AddTask(func(w *tt.Worker) {
-	fmt.Println("22222")
-	})
-	tt.GoFor(func(o *tt.Gfo) {
-		func(key int,link *ch.Link) {
-			tool.AddTask(func(w *tt.Worker) {
-				for  {
-					link.Push(1)
-				}
-				//time.Sleep(1*time.Second)
-				//fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,key,1)
-			})
-
-		}(o.Num,link)
-		o.SetBreak(o.Num+1 >=10000)
-	}).Run()
-
-
-	fmt.Println("--------------------------------------------------------------------")
+	tool:=tt.NewTool(5)
 	tool.Run()
 
-	go func() {
-		var count int
-		for  {
-			fmt.Printf("link count=>>%d\n",link.Count-count)
-			count=link.Count
+	for  i:=0;i<5;i++{
+		tool.AddTask(func(w *tt.Worker) {
+			link.Push(1)
+			fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,222,i)
 			time.Sleep(1*time.Second)
-		}
-	}()
-	tool.Wait()
 
+		})
+	}
+	tool.Wait()
+	fmt.Println("===================>")
+	for  i:=0;i<5;i++{
+		tool.AddTask(func(w *tt.Worker) {
+			link.Push(1)
+			fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,333,i)
+			time.Sleep(1*time.Second)
+
+		})
+	}
+	tool.Wait()
 	fmt.Printf("link count=>>%d\n",link.Count)
 
 }

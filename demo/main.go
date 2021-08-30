@@ -148,4 +148,11 @@ func main() {
 	tool.Wait()
 	fmt.Printf("link count=>>%d\n",link.Count)
 
+
+	//cache :=ch.NewCacher()
+
+
+
+
+
 }

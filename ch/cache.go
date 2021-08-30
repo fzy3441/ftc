@@ -27,6 +27,13 @@ func (obj *Cacher)Get(key string)interface{}{
 	return obj._cmap[key]
 }
 
+func (obj *Cacher)GetVal(key string,data interface{})interface{}  {
+	if !obj.IsExists(key){
+		obj.Set(key,data)
+	}
+	return obj.Get(key)
+}
+
 func (obj *Cacher)Push(data interface{})  {
 	obj._link_list.Push(data)
 }

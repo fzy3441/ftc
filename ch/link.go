@@ -109,7 +109,29 @@ func (obj *Link)Length ()int  {
 	return obj.Count
 }
 
-func (obj *Link)Delete(num int)bool {
+func (obj *Link)Remove(node *Node)bool {
+	if node==nil  {
+		return false
+	}
+
+	if obj.Head==node {
+		obj.Head=obj.Head.Next
+		obj.Head.Prev=nil
+	}
+	if obj.Last==node {
+		obj.Last=obj.Last.Prev
+		obj.Last.Next=nil
+	}
+	prev := node.Prev
+	next := node.Next
+	prev.Next=next
+	next.Prev=prev
+	obj.Count--
+
+	return true
+}
+
+func (obj *Link)RemoveAt(num int)bool {
 	obj.mutex.Lock()
 	defer obj.mutex.Unlock()
 	if obj.Count < num-1 {

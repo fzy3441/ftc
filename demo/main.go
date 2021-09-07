@@ -160,9 +160,13 @@ func main() {
 	b.Push(3)
 	b.Push(4)
 	a.Merge(b)
+	a.RemoveAt(2)
+	a.Remove(a.Head.Next.Next.Next)
+	//a.Remove(a.Head.Next.Next)
 	a.Range(func(o *tt.Gfo, node *ch.Node) {
 		fmt.Printf("----------%d\n",node.Data.(int))
 	})
+	fmt.Println(a.Count)
 
 
 

@@ -217,3 +217,20 @@ func (obj *Link)List()[]interface{} {
 	return list
 }
 
+func (obj *Link)Clone()*Link  {
+	clone:=&Link{}
+	obj.Range(func(o *tt.Gfo, node *Node) {
+		clone.Push(node.Data)
+	})
+	return clone
+}
+
+func (obj *Link)Merge(src *Link)  {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
+	obj.Last.Next=src.Head
+	src.Head.Prev=obj.Last
+	obj.Last=src.Last
+	obj.Count+=src.Count
+}
+

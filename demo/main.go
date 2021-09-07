@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/fzy3441/ftc/ch"
 	"github.com/fzy3441/ftc/tt"
-	"time"
 )
 
 func main() {
@@ -123,33 +122,48 @@ func main() {
 
 /*	fmt.Println(tt.TimeFmt())
 */
-	link := ch.NewLink()
-	tool:=tt.NewTool(5)
-	tool.Run()
-
-	for  i:=0;i<5;i++{
-		tool.AddTask(func(w *tt.Worker) {
-			link.Push(1)
-			fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,222,i)
-			time.Sleep(1*time.Second)
-
-		})
-	}
-	tool.Wait()
-	fmt.Println("===================>")
-	for  i:=0;i<5;i++{
-		tool.AddTask(func(w *tt.Worker) {
-			link.Push(1)
-			fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,333,i)
-			time.Sleep(1*time.Second)
-
-		})
-	}
-	tool.Wait()
-	fmt.Printf("link count=>>%d\n",link.Count)
+	//link := ch.NewLink()
+	//tool:=tt.NewTool(5)
+	//tool.Run()
+	//
+	//for  i:=0;i<5;i++{
+	//	tool.AddTask(func(w *tt.Worker) {
+	//		link.Push(1)
+	//		fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,222,i)
+	//		time.Sleep(1*time.Second)
+	//
+	//	})
+	//}
+	//tool.Wait()
+	//fmt.Println("===================>")
+	//for  i:=0;i<5;i++{
+	//	tool.AddTask(func(w *tt.Worker) {
+	//		link.Push(1)
+	//		fmt.Printf("name=>%s  num=>%d i=>>%d\n",w.Name,333,i)
+	//		time.Sleep(1*time.Second)
+	//
+	//	})
+	//}
+	//tool.Wait()
+	//fmt.Printf("link count=>>%d\n",link.Count)
 
 
 	//cache :=ch.NewCacher()
+	a:=ch.NewLink()
+	a.Push(1)
+	a.Push(2)
+	a.Push(3)
+	a.Push(4)
+	b:=ch.NewLink()
+	b.Push(1)
+	b.Push(2)
+	b.Push(3)
+	b.Push(4)
+	a.Merge(b)
+	a.Range(func(o *tt.Gfo, node *ch.Node) {
+		fmt.Printf("----------%d\n",node.Data.(int))
+	})
+
 
 
 

@@ -14,7 +14,7 @@ const (
 )
 
 type Stat struct {
-	iWorker,iWorking,iIdle,iQueue int
+	iWorker,iWorking,iIdle,iQueue,iCount int
 	chQueueI,chIdleI,chWorkingI chan int
 	chComm chan StatStopInt
 }
@@ -45,6 +45,14 @@ func (obj *Stat)Run()  {
 			return
 		}
 	}
+}
+
+func (obj *Stat) ResetCount()  {
+	obj.iCount=0
+}
+
+func (obj *Stat)Count()int  {
+	return obj.iCount
 }
 
 type Pool struct {
@@ -120,11 +128,13 @@ func (obj *Pool)newWork(work *Worker)  {
 		obj.chWorkingI<- +1
 		work.Run()
 		obj.chWorkingI<- -1
+		obj.iCount++
 		obj.chIdleWork <- work
 		obj.chIdleI <- +1
 	}(work)
 }
 func (obj *Pool)Run()  {
+	obj.ResetCount()
 	obj.actionWorking()
 }
 

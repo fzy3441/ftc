@@ -117,10 +117,12 @@ func (obj *Link)Remove(node *Node)bool {
 	if obj.Head==node {
 		obj.Head=obj.Head.Next
 		obj.Head.Prev=nil
+		return true
 	}
 	if obj.Last==node {
 		obj.Last=obj.Last.Prev
 		obj.Last.Next=nil
+		return true
 	}
 	prev := node.Prev
 	next := node.Next

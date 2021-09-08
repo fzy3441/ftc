@@ -114,17 +114,28 @@ func (obj *Link)Remove(node *Node)bool {
 		return false
 	}
 
+	if obj.Head==node && obj.Last==node {
+		obj.Head=nil
+		obj.Last=nil
+		obj.Count--
+		return true
+	}
+
 	if obj.Head==node {
 		obj.Head=obj.Head.Next
 		obj.Head.Prev=nil
+		obj.Count--
 		return true
 	}
 	if obj.Last==node {
 		obj.Last=obj.Last.Prev
 		obj.Last.Next=nil
+		obj.Count--
 		return true
 	}
-	prev := node.Prev
+	if obj.Head==node && obj.Last==node {}
+
+		prev := node.Prev
 	next := node.Next
 	prev.Next=next
 	next.Prev=prev
@@ -199,6 +210,9 @@ func (obj *Link)Insert(num int,data interface{})  {
 	}).Action()
 }
 func (obj *Link)Range(f func(o *tt.Gfo,node *Node),order...RANGE_ORDER_STATUS)  {
+	if obj.Count==0 {
+		return
+	}
 	var item *Node
 	odr:=RANGE_STATUS_ORDER_ASC
 	if len(order)>0 {

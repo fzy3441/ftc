@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/fzy3441/ftc/ch"
 	"github.com/fzy3441/ftc/tt"
+	"time"
 )
 
 func main() {
@@ -161,18 +162,33 @@ func main() {
 	//b.Push(4)
 	//a.Merge(b)
 	//a.RemoveAt(2)
-	a.Remove(a.Head)
-	a.Remove(a.Head)
-	a.Remove(a.Head)
-	a.Remove(a.Head)
+	//a.Remove(a.Head)
+	//a.Remove(a.Head)
+	//a.Remove(a.Head)
+	//a.Remove(a.Head)
 	//a.Remove(a.Head.Next.Next)
-	a.Range(func(o *tt.Gfo, node *ch.Node) {
-		fmt.Printf("----------%d\n",node.Data.(int))
-	})
+	go func() {
+		a.Range(func(o *tt.Gfo, node *ch.Node) {
+			fmt.Printf("----------%d\n",node.Data.(int))
+			fmt.Printf("==========%+v\n",a.Clone().List())
+
+			time.Sleep(2*time.Second)
+		})
+	}()
+
+
+
+	go func() {
+		a.Range(func(o *tt.Gfo, node *ch.Node) {
+			fmt.Printf("----------%d\n",node.Data.(int))
+			fmt.Printf("==========%+v\n",a.Clone().List())
+
+			time.Sleep(3*time.Second)
+		})
+	}()
+
 	fmt.Println(a.Count)
-
-
-
+	time.Sleep(10*time.Second)
 
 
 

@@ -110,6 +110,8 @@ func (obj *Link)Length ()int  {
 }
 
 func (obj *Link)Remove(node *Node)bool {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	if node==nil  {
 		return false
 	}
@@ -256,6 +258,8 @@ func (obj *Link)List()[]interface{} {
 }
 
 func (obj *Link)Clone()*Link  {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	clone:=&Link{}
 	obj.Range(func(o *tt.Gfo, node *Node) {
 		clone.Push(node.Data)

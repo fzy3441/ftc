@@ -84,8 +84,9 @@ func (obj *Link)Shift()(data interface{} ) {
 	}else {
 		obj.Head= obj.Head.Next
 		obj.Head.Prev = nil
-		obj.Count--
 	}
+	obj.Count--
+
 	return data
 }
 
@@ -115,32 +116,12 @@ func (obj *Link)Remove(node *Node)bool {
 	if node==nil  {
 		return false
 	}
+	prev:=tt.If(node.Prev==nil, func()*Node {obj.Head=node.Next;return node.Prev},node.Prev).(*Node)
+	next:=tt.If(node.Next==nil, func()*Node {obj.Last=node.Prev;return node.Next},node.Next).(*Node)
 
-	if obj.Head==node && obj.Last==node {
-		obj.Head=nil
-		obj.Last=nil
-		obj.Count--
-		return true
-	}
+	tt.If(prev!=nil, func() {prev.Next=next})
+	tt.If(next!=nil, func() {next.Prev=prev})
 
-	if obj.Head==node {
-		obj.Head=obj.Head.Next
-		obj.Head.Prev=nil
-		obj.Count--
-		return true
-	}
-	if obj.Last==node {
-		obj.Last=obj.Last.Prev
-		obj.Last.Next=nil
-		obj.Count--
-		return true
-	}
-	if obj.Head==node && obj.Last==node {}
-
-		prev := node.Prev
-	next := node.Next
-	prev.Next=next
-	next.Prev=prev
 	obj.Count--
 
 	return true
@@ -261,6 +242,9 @@ func (obj *Link)Clone()*Link  {
 	obj.mutex.Lock()
 	defer obj.mutex.Unlock()
 	clone:=&Link{}
+	if obj.Count==0 {
+		return clone
+	}
 	obj.Range(func(o *tt.Gfo, node *Node) {
 		clone.Push(node.Data)
 	})
@@ -270,8 +254,7 @@ func (obj *Link)Clone()*Link  {
 func (obj *Link)Merge(src *Link)  {
 	obj.mutex.Lock()
 	defer obj.mutex.Unlock()
-	obj.Last.Next=src.Head
-	src.Head.Prev=obj.Last
+	tt.If(obj.Last==nil, func() {obj.Last=src.Last;obj.Head=src.Head}, func() {obj.Last.Next=src.Head;src.Head.Prev=obj.Last})
 	obj.Last=src.Last
 	obj.Count+=src.Count
 }

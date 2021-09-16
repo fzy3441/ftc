@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/fzy3441/ftc/ch"
 	"github.com/fzy3441/ftc/tt"
-	"time"
 )
 
 func main() {
@@ -155,41 +154,47 @@ func main() {
 	a.Push(2)
 	a.Push(3)
 	a.Push(4)
-	//b:=ch.NewLink()
-	//b.Push(1)
-	//b.Push(2)
-	//b.Push(3)
-	//b.Push(4)
-	//a.Merge(b)
+	b:=ch.NewLink()
+	b.Push(1)
+	b.Push(2)
+	b.Push(35)
+	b.Push(4)
+	a.Merge(b)
 	//a.RemoveAt(2)
-	//a.Remove(a.Head)
+	//a.Remove(a.Last)
 	//a.Remove(a.Head)
 	//a.Remove(a.Head)
 	//a.Remove(a.Head)
 	//a.Remove(a.Head.Next.Next)
-	go func() {
-		a.Range(func(o *tt.Gfo, node *ch.Node) {
-			fmt.Printf("----------%d\n",node.Data.(int))
-			fmt.Printf("==========%+v\n",a.Clone().List())
+	a.Range(func(o *tt.Gfo, node *ch.Node) {
+		fmt.Printf("----------%d\n",node.Data.(int))
+		//fmt.Printf("==========%+v\n",a.Clone().List())
+	})
+	func() {
 
-			time.Sleep(2*time.Second)
-		})
 	}()
+	//
+	//
+	//
+	//go func() {
+	//	a.Range(func(o *tt.Gfo, node *ch.Node) {
+	//		fmt.Printf("----------%d\n",node.Data.(int))
+	//		fmt.Printf("==========%+v\n",a.Clone().List())
+	//
+	//		time.Sleep(3*time.Second)
+	//	})
+	//}()
+	//
+	//fmt.Println(a.Count)
+	//time.Sleep(10*time.Second)
 
+	//tt.If(12, func() {a()}, errors.New("44456454545454"))
 
-
-	go func() {
-		a.Range(func(o *tt.Gfo, node *ch.Node) {
-			fmt.Printf("----------%d\n",node.Data.(int))
-			fmt.Printf("==========%+v\n",a.Clone().List())
-
-			time.Sleep(3*time.Second)
-		})
-	}()
-
-	fmt.Println(a.Count)
-	time.Sleep(10*time.Second)
-
-
-
+}
+func a()int  {
+	fmt.Println("11111")
+	return 11
+}
+func b()  {
+	fmt.Println("22222")
 }

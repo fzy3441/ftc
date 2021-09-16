@@ -1,6 +1,6 @@
 package tt
 
-func Ternary(check bool,left interface{},right interface{}) interface{} {
+func Ternary(check bool,left,right interface{}) interface{} {
 	if check {
 		return left
 	}else

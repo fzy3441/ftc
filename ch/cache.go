@@ -24,6 +24,9 @@ func (obj *Cacher)Set(key string,data interface{}){
 }
 
 func (obj *Cacher)Get(key string)interface{}{
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
+
 	return obj._cmap[key]
 }
 
@@ -55,6 +58,8 @@ func (obj *Cacher)GetLink()*Link  {
 }
 
 func (obj *Cacher)IsExists(key string)bool  {
+	obj.mutex.Lock()
+	defer obj.mutex.Unlock()
 	_,ok :=obj._cmap[key]
 	return ok
 }
